@@ -1,0 +1,6 @@
+POST http://127.0.0.1:8000/query
+Content-Type: application/json
+
+{
+  "question": "草图怎么固定？"
+}

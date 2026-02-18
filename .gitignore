@@ -1,0 +1,42 @@
+# venv / python cache
+.venv/
+venv_student/
+**/__pycache__/
+*.pyc
+
+# IDE
+.idea/
+.vscode/
+
+# runtime / generated data
+data/
+tmp/
+exported_courses/
+PQLS_Courses/
+*.db
+*.sqlite
+*.log
+
+# models / indexes (huge)
+student/models/
+student/nlp/index/
+cache/
+.cache/
+hf_cache/
+cache_hf/
+
+# media / binaries
+*.mp4
+*.mkv
+*.avi
+*.wav
+*.mp3
+*.srt
+*.ass
+
+# build outputs
+dist/
+build/
+*.spec
+*.exe
+*.dll
