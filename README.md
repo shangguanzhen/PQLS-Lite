@@ -89,6 +89,7 @@ PQLS-Lite is an offline “course pack” workflow for learning from long videos
 ![Student GUI](docs/screenshots/student.png)
 
 
+
 PQLS-Lite 是一个离线“课程包”工作流：
 **教师端**把“视频+字幕”切成可检索的小片段并导出课程包 → **学生端**导入多个课程包并全库搜索，点击即播放对应片段。
 
