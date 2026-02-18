@@ -1,166 +1,159 @@
+看到了，你这个 README 现在“主页图片不显示、只剩文件链接”的根因，基本都是 **Markdown 结构被你中途写乱了**（尤其是：代码块 ``` 没有正确闭合、标题重复、列表/段落没有空行、夹杂了“english:”这种半截占位），导致 GitHub 的渲染器**从某一行开始整段当成代码块/普通文本**，后面的 `![...](...)` 自然就不会按图片渲染。 
+
+下面我给你一份 **“结构清晰 + 标题靠前就讲痛点 + 图片必显示 + 不复杂”** 的 README 完整版，你直接覆盖你本地的 `README.md` 即可。
+
+---
+
+## 1）README.MD：i hope you look it,thanks
+
+````md
 # PQLS-Lite
-系统=离线课程包：字幕切片 + 全库搜索 + 播放
 
-## Why PQLS-Lite
-Traditional long video courses are hard to navigate. PQLS-Lite turns videos into searchable micro-segments, so learners can jump directly to the explanation clip instead of scrubbing the timeline.
-**Pain point:** Subtitles alone don’t solve retrieval. Learners still need a fast, reliable mapping from a query to the exact video segment—especially across multi-episode courses.  
-**Solution:** PQLS-Lite builds an offline segment index from video + SRT, then enables instant keyword/semantic search and one-click playback of the matched clip.
+**Offline Course Pack · Subtitle Segments · Global Search · One-Click Playback**
 
-# PQLS-Lite
-PQLS-Lite 是一个“离线课程包 + 字幕切片检索 + 一键播放”的轻量学习系统：老师把视频+字幕切成课程包，学生端可输入关键词/语义检索，直接跳到对应讲解片段.
+PQLS-Lite is a lightweight offline learning system that converts long tutorial videos into **searchable micro-segments** (via SRT subtitles), so learners can jump straight to the exact explanation clip instead of scrubbing timelines.
 
-2）核心特性（最重要）
-## Features
-- ✅ Teacher 端：导入视频 + SRT → 自动切分片段 → 生成课程包（含 manifest / questions.db / course.db / segments）
-- ✅ Student 端：导入课程包 → 右侧字幕/问题列表即时筛选 → 双击播放对应视频片段
-- ✅ 支持“跨课程全局搜索”（多集课程一起查）
-- ✅ 可选：离线语义检索（Instructor-XL），对“加了语气词/助词”的表达更友好
-- ✅ 全离线运行：课程包可拷贝分发，无需联网（语义模型下载/缓存可离线拷贝）
+## Why PQLS-Lite (Pain Point → Solution)
 
-3）适用场景
-## Use Cases
-- 机械/UG/编程等“长视频教程”：学生遇到问题直接搜关键句，秒定位到讲解片段  
-- 教师课后复盘：按知识点快速回看对应片段  
-- 线下培训/公司内训：U盘/网盘分发课程包，学员端离线检索与播放
+**Pain Point:** Long video courses are hard to navigate. Even with subtitles, learners still waste time because there is no fast and reliable way to map a question to the exact segment—especially across multi-episode courses.
 
-4）快速开始（不打包版，最符合你现在阶段）
-## Quick Start (Source)
-> Python 3.10+ recommended
+**Solution:** PQLS-Lite builds an **offline segment index** from Video + SRT, exports a portable **Course Pack**, and provides **instant keyword/semantic search** + **double-click playback** of the matched clip.
 
-### 1) Install dependencies
-```bash
-pip install -r requirements.txt
-pip install -r student/requirements.txt
-
-2) Run Teacher GUI
-python teacher/teacher_gui.py
-
-3) Run Student GUI
-python student/student_gui.py
-
-6、语义检索
-
-## Optional: Offline Semantic Search (Instructor-XL)
-Semantic search helps when the query wording differs slightly from subtitles (e.g. “打开草图的环境” vs “打开草图环境”).
-
-Model directory example:
-- student/models/instructor-xl/
-
-Index directory example:
-- student/nlp/index/
-
-Build index (example):
-```bash
-python -m nlp.build_index --courses_dir "D:\PQLS_Courses" --model_dir "D:\...\student\models\instructor-xl" --device cuda
-
-english:
-
-
-### 7）FAQ（你这项目很需要）
-```md
-## FAQ
-**Q: Why no results after importing?**  
-A: Make sure the course folder contains a non-empty `questions.db` (Teacher generates it).
-
-**Q: Do students need VLC?**  
-A: Recommended. Student player uses VLC embedded mode for best compatibility.
-
-**Q: Can I put course packages anywhere?**  
-A: Yes. Student selects a local “course library folder” (e.g. `PQLS_Courses`) and imports course packages into it.
-
-ROADMAP:
-
-## Roadmap
-- [ ] Release: prebuilt Windows portable package (Teacher / Student)
-- [ ] Better duplicate course detection (optional)
-- [ ] Improve semantic query normalization (stopwords / punctuation / synonyms)
-- [ ] One-click “Rebuild Index” button (for semantic search)
-
-
-PQLS-Lite is an offline “course pack” workflow for learning from long videos:
-**Teacher** cuts video into searchable segments with subtitles → exports a **Course Pack** → **Student** imports packs and searches across courses, then plays the matched segment.
+---
 
 ## Screenshots
 
-### Teacher (课程包制作端)
+### Teacher (Course Pack Builder)
 ![Teacher GUI](docs/screenshots/teacher.png)
 
-### Student (学习端)
+### Student (Search & Player)
 ![Student GUI](docs/screenshots/student.png)
 
+---
 
+## Features
 
-PQLS-Lite 是一个离线“课程包”工作流：
-**教师端**把“视频+字幕”切成可检索的小片段并导出课程包 → **学生端**导入多个课程包并全库搜索，点击即播放对应片段。
+- ✅ **Teacher GUI:** import Video + SRT → auto cut segments → export Course Pack  
+  (includes `manifest.json`, `questions.db`, `course.db`, `segments/`)
+- ✅ **Student GUI:** import multiple Course Packs → right-side list auto-filters while typing → double-click to play
+- ✅ **Global search across courses** (multi-episode search)
+- ✅ **Optional offline semantic search** (Instructor-XL) for better matching when wording differs slightly  
+  e.g. “打开草图的环境” vs “打开草图环境”
+- ✅ **Offline-first:** Course Packs can be copied and shared without internet
 
 ---
 
-## Features / 特性
+## Use Cases
 
-- Teacher-side course pack export (video segments + SQLite DB + manifest validation)
-- Student-side import multiple course packs, global search, click-to-play
-- Optional semantic search (Instructor-XL) as an enhancement module
-- Offline-first, works well for classrooms / LAN / low-network environments
+- Long tutorials (UG / CAD / programming / etc.): search a phrase → jump to the exact explanation
+- Teacher review: quickly replay clips by knowledge points
+- Offline training / classroom / LAN environments: distribute packs via USB / NAS / cloud drive
 
 ---
 
-## Course Pack Structure / 课程包结构
+## Course Pack Structure
 
+```text
 <course_name>/
-segments/
-source/
-course.db
-questions.db
-manifest.json
-.pqls_meta.json (optional)
+  segments/
+  source/
+  course.db
+  questions.db
+  manifest.json
+  .pqls_meta.json   (optional)
+````
 
-Student imports **only** valid course packs (manifest validation).
-
----
-
-## Dependencies / 依赖
-
-- Windows 10/11 + Python 3.10
-- ffmpeg/ffprobe/ffplay under project root `bin/`
-- VLC player installed (student-side embedded playback)
+Student imports **only valid** Course Packs (manifest validation).
 
 ---
 
-## Quick Start / 快速开始
+## Quick Start (Source)
 
-### Teacher / 教师端
-1) Put ffmpeg binaries into `bin/`
-2) Run teacher GUI:
+> Python 3.10+ recommended
+> Windows 10/11 recommended
+
+### 1) Install dependencies
 
 ```powershell
-cd teacher
-python teacher_gui.py
-Student / 学生端
+pip install -r requirements.txt
+pip install -r student/requirements.txt
+```
 
-Run student GUI:
+### 2) Run Teacher GUI
 
-cd student
-python student_gui.py
+```powershell
+python teacher/teacher_gui.py
+```
 
+### 3) Run Student GUI
 
-First run will ask to choose a Course Library folder (e.g. Desktop\PQLS_Courses).
-Index Rebuild / 索引重建（逻辑说明）
-
-Index is a reproducible cache built from course packs.
-After importing new course packs, rebuild the index to include new content in semantic search.
-
-(Implementation is provided under student/nlp/.)
-License
-
-MIT (or your choice)
-
-
-保存关闭。
+```powershell
+python student/student_gui.py
+```
 
 ---
 
-## 提交 README 并推送（两行）
+## Optional: Offline Semantic Search (Instructor-XL)
+
+Model directory example:
+
+```text
+student/models/instructor-xl/
+```
+
+Index directory example:
+
+```text
+student/nlp/index/
+```
+
+Build index example (one line):
+
+```powershell
+python -m nlp.build_index --courses_dir "D:\PQLS_Courses" --model_dir "D:\2026-2-9pqls_backend\student\models\instructor-xl" --device cuda
+```
+
+---
+
+## FAQ
+
+**Q: Why no results after importing?**
+A: Ensure the Course Pack contains a non-empty `questions.db` (generated by Teacher).
+
+**Q: Do students need VLC?**
+A: Recommended. Student playback uses VLC embedded mode for best compatibility.
+
+**Q: Where should students store Course Packs?**
+A: Student selects a local **Course Library folder** (e.g. `PQLS_Courses`) and imports packs into it.
+
+---
+
+## Roadmap
+
+* [ ] Windows portable release (Teacher / Student)
+* [ ] Improve semantic query normalization (stopwords / punctuation / synonyms)
+* [ ] One-click “Rebuild Index” button (semantic search)
+
+---
+
+## License
+
+MIT
+
+````
+
+---
+
+## 2）你本地改完后，推送到 GitHub（3 行）
+
+在项目根目录（`D:\2026-2-9pqls_backend`）执行：
+
 ```powershell
 git add README.md
-git commit -m "docs: add README"
+git commit -m "docs: improve README and show screenshots"
 git push
+````
+
+---
+
+
