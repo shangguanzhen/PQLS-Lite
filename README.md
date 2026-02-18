@@ -1,12 +1,5 @@
-看到了，你这个 README 现在“主页图片不显示、只剩文件链接”的根因，基本都是 **Markdown 结构被你中途写乱了**（尤其是：代码块 ``` 没有正确闭合、标题重复、列表/段落没有空行、夹杂了“english:”这种半截占位），导致 GitHub 的渲染器**从某一行开始整段当成代码块/普通文本**，后面的 `![...](...)` 自然就不会按图片渲染。 
-
-下面我给你一份 **“结构清晰 + 标题靠前就讲痛点 + 图片必显示 + 不复杂”** 的 README 完整版，你直接覆盖你本地的 `README.md` 即可。
-
----
-
 ## 1）README.MD：i hope you look it,thanks
 
-````md
 # PQLS-Lite
 
 **Offline Course Pack · Subtitle Segments · Global Search · One-Click Playback**
